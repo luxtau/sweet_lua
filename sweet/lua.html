@@ -1,0 +1,1575 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 8.6.5" />
+<title>Sweet Lua</title>
+<style type="text/css">
+
+/* Shared CSS for AsciiDoc xhtml11 and html5 backends */
+
+/* Default font. */
+body {
+  font-family: Georgia,serif;
+}
+
+/* Title font. */
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Arial,Helvetica,sans-serif;
+}
+
+body {
+  margin: 1em 5% 1em 5%;
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
+}
+a:visited {
+  color: fuchsia;
+}
+
+em {
+  font-style: italic;
+  color: navy;
+}
+
+strong {
+  font-weight: bold;
+  color: #083194;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #527bbd;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1, h2, h3 {
+  border-bottom: 2px solid silver;
+}
+h2 {
+  padding-top: 0.5em;
+}
+h3 {
+  float: left;
+}
+h3 + * {
+  clear: left;
+}
+h5 {
+  font-size: 1.0em;
+}
+
+div.sectionbody {
+  margin-left: 0;
+}
+
+hr {
+  border: 1px solid silver;
+}
+
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+ul, ol, li > p {
+  margin-top: 0;
+}
+ul > li     { color: #aaa; }
+ul > li > * { color: black; }
+
+pre {
+  padding: 0;
+  margin: 0;
+}
+
+#author {
+  color: #527bbd;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+#email {
+}
+#revnumber, #revdate, #revremark {
+}
+
+#footer {
+  font-size: small;
+  border-top: 2px solid silver;
+  padding-top: 0.5em;
+  margin-top: 4.0em;
+}
+#footer-text {
+  float: left;
+  padding-bottom: 0.5em;
+}
+#footer-badges {
+  float: right;
+  padding-bottom: 0.5em;
+}
+
+#preamble {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+div.imageblock, div.exampleblock, div.verseblock,
+div.quoteblock, div.literalblock, div.listingblock, div.sidebarblock,
+div.admonitionblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.admonitionblock {
+  margin-top: 2.0em;
+  margin-bottom: 2.0em;
+  margin-right: 10%;
+  color: #606060;
+}
+
+div.content { /* Block element content. */
+  padding: 0;
+}
+
+/* Block element titles. */
+div.title, caption.title {
+  color: #527bbd;
+  font-weight: bold;
+  text-align: left;
+  margin-top: 1.0em;
+  margin-bottom: 0.5em;
+}
+div.title + * {
+  margin-top: 0;
+}
+
+td div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content div.title:first-child {
+  margin-top: 0.0em;
+}
+div.content + div.title {
+  margin-top: 0.0em;
+}
+
+div.sidebarblock > div.content {
+  background: #ffffee;
+  border: 1px solid #dddddd;
+  border-left: 4px solid #f0f0f0;
+  padding: 0.5em;
+}
+
+div.literalblock > div.content,
+div.listingblock > div.content {
+  border: 1px solid #dddddd;
+  border-left: 5px solid #f0f0f0;
+  background: #f8f8f8;
+  padding: 0.5em;
+}
+
+div.quoteblock, div.verseblock {
+  padding-left: 1.0em;
+  margin-left: 1.0em;
+  margin-right: 10%;
+  border-left: 5px solid #f0f0f0;
+  color: #777777;
+}
+
+div.quoteblock > div.attribution {
+  padding-top: 0.5em;
+  text-align: right;
+}
+
+div.verseblock > pre.content {
+  font-family: inherit;
+  font-size: inherit;
+}
+div.verseblock > div.attribution {
+  padding-top: 0.75em;
+  text-align: left;
+}
+/* DEPRECATED: Pre version 8.2.7 verse style literal block. */
+div.verseblock + div.attribution {
+  text-align: left;
+}
+
+div.admonitionblock .icon {
+  vertical-align: top;
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: underline;
+  color: #527bbd;
+  padding-right: 0.5em;
+}
+div.admonitionblock td.content {
+  padding-left: 0.5em;
+  border-left: 3px solid #dddddd;
+}
+
+div.exampleblock > div.content {
+  border-left: 3px solid #dddddd;
+  padding-left: 0.5em;
+}
+
+div.imageblock div.content { padding-left: 0; }
+span.image img { border-style: none; }
+a.image:visited { color: white; }
+
+dl {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+dt {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  font-style: normal;
+  color: navy;
+}
+dd > *:first-child {
+  margin-top: 0.1em;
+}
+
+ul, ol {
+    list-style-position: outside;
+}
+ol.arabic {
+  list-style-type: decimal;
+}
+ol.loweralpha {
+  list-style-type: lower-alpha;
+}
+ol.upperalpha {
+  list-style-type: upper-alpha;
+}
+ol.lowerroman {
+  list-style-type: lower-roman;
+}
+ol.upperroman {
+  list-style-type: upper-roman;
+}
+
+div.compact ul, div.compact ol,
+div.compact p, div.compact p,
+div.compact div, div.compact div {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+}
+
+tfoot {
+  font-weight: bold;
+}
+td > div.verse {
+  white-space: pre;
+}
+
+div.hdlist {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+div.hdlist tr {
+  padding-bottom: 15px;
+}
+dt.hdlist1.strong, td.hdlist1.strong {
+  font-weight: bold;
+}
+td.hdlist1 {
+  vertical-align: top;
+  font-style: normal;
+  padding-right: 0.8em;
+  color: navy;
+}
+td.hdlist2 {
+  vertical-align: top;
+}
+div.hdlist.compact tr {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.comment {
+  background: yellow;
+}
+
+.footnote, .footnoteref {
+  font-size: 0.8em;
+}
+
+span.footnote, span.footnoteref {
+  vertical-align: super;
+}
+
+#footnotes {
+  margin: 20px 0 20px 0;
+  padding: 7px 0 0 0;
+}
+
+#footnotes div.footnote {
+  margin: 0 0 5px 0;
+}
+
+#footnotes hr {
+  border: none;
+  border-top: 1px solid silver;
+  height: 1px;
+  text-align: left;
+  margin-left: 0;
+  width: 20%;
+  min-width: 100px;
+}
+
+div.colist td {
+  padding-right: 0.5em;
+  padding-bottom: 0.3em;
+  vertical-align: top;
+}
+div.colist td img {
+  margin-top: 0.3em;
+}
+
+@media print {
+  #footer-badges { display: none; }
+}
+
+#toc {
+  margin-bottom: 2.5em;
+}
+
+#toctitle {
+  color: #527bbd;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 1.0em;
+  margin-bottom: 0.1em;
+}
+
+div.toclevel1, div.toclevel2, div.toclevel3, div.toclevel4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+div.toclevel2 {
+  margin-left: 2em;
+  font-size: 0.9em;
+}
+div.toclevel3 {
+  margin-left: 4em;
+  font-size: 0.9em;
+}
+div.toclevel4 {
+  margin-left: 6em;
+  font-size: 0.9em;
+}
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+
+/*
+ * xhtml11 specific
+ *
+ * */
+
+tt {
+  font-family: monospace;
+  font-size: inherit;
+  color: navy;
+}
+
+div.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+div.tableblock > table {
+  border: 3px solid #527bbd;
+}
+thead, p.table.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.table {
+  margin-top: 0;
+}
+/* Because the table frame attribute is overriden by CSS in most browsers. */
+div.tableblock > table[frame="void"] {
+  border-style: none;
+}
+div.tableblock > table[frame="hsides"] {
+  border-left-style: none;
+  border-right-style: none;
+}
+div.tableblock > table[frame="vsides"] {
+  border-top-style: none;
+  border-bottom-style: none;
+}
+
+
+/*
+ * html5 specific
+ *
+ * */
+
+.monospaced {
+  font-family: monospace;
+  font-size: inherit;
+  color: navy;
+}
+
+table.tableblock {
+  margin-top: 1.0em;
+  margin-bottom: 1.5em;
+}
+thead, p.tableblock.header {
+  font-weight: bold;
+  color: #527bbd;
+}
+p.tableblock {
+  margin-top: 0;
+}
+table.tableblock {
+  border-width: 3px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #527bbd;
+  border-collapse: collapse;
+}
+th.tableblock, td.tableblock {
+  border-width: 1px;
+  padding: 4px;
+  border-style: solid;
+  border-color: #527bbd;
+}
+
+table.tableblock.frame-topbot {
+  border-left-style: hidden;
+  border-right-style: hidden;
+}
+table.tableblock.frame-sides {
+  border-top-style: hidden;
+  border-bottom-style: hidden;
+}
+table.tableblock.frame-none {
+  border-style: hidden;
+}
+
+th.tableblock.halign-left, td.tableblock.halign-left {
+  text-align: left;
+}
+th.tableblock.halign-center, td.tableblock.halign-center {
+  text-align: center;
+}
+th.tableblock.halign-right, td.tableblock.halign-right {
+  text-align: right;
+}
+
+th.tableblock.valign-top, td.tableblock.valign-top {
+  vertical-align: top;
+}
+th.tableblock.valign-middle, td.tableblock.valign-middle {
+  vertical-align: middle;
+}
+th.tableblock.valign-bottom, td.tableblock.valign-bottom {
+  vertical-align: bottom;
+}
+
+
+/*
+ * Theme specific overrides of the preceding (asciidoc.css) CSS.
+ *
+ */
+body {
+  font-family: Arial,sans-serif;
+  font-size: 17px;
+  color: #000000;
+  line-height: 1.3em;
+}
+h1, h2, h3, h4, h5, h6,
+div.title, caption.title,
+thead, p.table.header,
+#toctitle,
+#author, #revnumber, #revdate, #revremark,
+#footer {
+  font-family: Garmond, Georgia, serif;
+  font-weight: normal;
+  border-bottom-width: 0;
+  color: #204040;
+}
+div.title, caption.title { color: #596673; font-weight: bold; }
+h1 { font-size: 240%; }
+h2 { font-size: 180%; }
+h3 { font-size: 150%; }
+h4 { font-size: 130%; }
+h5 { font-size: 100%; }
+h6 { font-size: 100%; }
+#header h1 { margin-top: 0; }
+#toc {
+  color: #444444;
+  line-height: 1.5;
+  margin-bottom: 0.5em;
+}
+#toctitle {
+  font-size: 20px;
+  padding-top: 0;
+  margin-bottom: 0.5em;
+}
+#toc a {
+    border-bottom: 1px dotted #999999;
+    color: #444444 !important;
+    text-decoration: none !important;
+}
+#toc a:hover {
+    border-bottom: 1px solid #6D4100;
+    color: #6D4100 !important;
+    text-decoration: none !important;
+}
+div.toclevel1 { margin-top: 0.2em; font-size: 16px; }
+div.toclevel2 { margin-top: 0.15em; font-size: 14px; }
+em, dt, td.hdlist1 { color: black; }
+strong { color: #3E4349; }
+a { color: #004B6B; text-decoration: none; border-bottom: 1px dotted #004B6B; }
+a:visited { color: #615FA0; border-bottom: 1px dotted #615FA0; }
+a:hover { color: #6D4100; border-bottom: 1px solid #6D4100; }
+div.tableblock > table, table.tableblock { border: 3px solid #E8E8E8; }
+th.tableblock, td.tableblock { border: 1px solid #E8E8E8; }
+//ul > li > * { color: #3E4349; }
+pre, tt, .monospaced { font-family: Consolas,monospace; }
+tt, .monospaced { font-size: 0.9em; color: black;
+}
+div.exampleblock > div.content, div.sidebarblock > div.content, div.listingblock > div.content { border-width: 0 0 0 3px; border-color: #E8E8E8; }
+div.verseblock { border-left-width: 0; margin-left: 3em; }
+div.quoteblock { border-left-width: 3px; margin-left: 0; margin-right: 0;}
+div.admonitionblock td.content { border-left: 3px solid #E8E8E8; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0.5em 0 0.5em 0;
+  line-height: 1.3;
+  padding: 0 0 0 0;
+}
+
+#preamble {
+  margin-top: 0.5em;
+  margin-bottom: 0.75em;
+}
+
+#footer {
+  margin-top: 2.0em;
+}
+.hll { background-color: #ffffff }
+.c { color: #008000 } /* Comment */
+.err { border: 1px solid #FF0000 } /* Error */
+.k { color: #0000ff } /* Keyword */
+.cm { color: #008000 } /* Comment.Multiline */
+.cp { color: #0000ff } /* Comment.Preproc */
+.c1 { color: #008000 } /* Comment.Single */
+.cs { color: #008000 } /* Comment.Special */
+.ge { font-style: italic } /* Generic.Emph */
+.gh { font-weight: bold } /* Generic.Heading */
+.gp { font-weight: bold } /* Generic.Prompt */
+.gs { font-weight: bold } /* Generic.Strong */
+.gu { font-weight: bold } /* Generic.Subheading */
+.kc { color: #0000ff } /* Keyword.Constant */
+.kd { color: #0000ff } /* Keyword.Declaration */
+.kn { color: #0000ff } /* Keyword.Namespace */
+.kp { color: #0000ff } /* Keyword.Pseudo */
+.kr { color: #0000ff } /* Keyword.Reserved */
+.kt { color: #2b91af } /* Keyword.Type */
+.s { color: #a31515 } /* Literal.String */
+.nc { color: #2b91af } /* Name.Class */
+.ow { color: #0000ff } /* Operator.Word */
+.sb { color: #a31515 } /* Literal.String.Backtick */
+.sc { color: #a31515 } /* Literal.String.Char */
+.sd { color: #a31515 } /* Literal.String.Doc */
+.s2 { color: #a31515 } /* Literal.String.Double */
+.se { color: #a31515 } /* Literal.String.Escape */
+.sh { color: #a31515 } /* Literal.String.Heredoc */
+.si { color: #a31515 } /* Literal.String.Interpol */
+.sx { color: #a31515 } /* Literal.String.Other */
+.sr { color: #a31515 } /* Literal.String.Regex */
+.s1 { color: #a31515 } /* Literal.String.Single */
+.ss { color: #a31515 } /* Literal.String.Symbol */
+</style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([2-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName == 'DIV'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName == 'DIV' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(2);
+/*]]>*/
+</script>
+</head>
+<body class="article">
+<div id="header">
+<h1>Sweet Lua</h1>
+<div id="toc">
+  <div id="toctitle">Table of Contents</div>
+  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_overview">1. Overview</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Sweet Lua is a C++ to Lua binding library.  It requires Microsoft Visual Studio
+2008 (MSVC 9.0) and MinGW.</p></div>
+<div class="paragraph"><p>Features:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Bind C++ functions as Lua functions and closures with out of order parameters.
+</p>
+</li>
+<li>
+<p>
+Bind C++ objects as Lua tables with lifetime controlled by either C++ or Lua.
+</p>
+</li>
+<li>
+<p>
+Coroutines.
+</p>
+</li>
+<li>
+<p>
+Type safety.
+</p>
+</li>
+<li>
+<p>
+Error handling.
+</p>
+</li>
+<li>
+<p>
+Convert C++ iterator sequences to Lua iterators.
+</p>
+</li>
+<li>
+<p>
+STL vector, list, set, and map integration.
+</p>
+</li>
+<li>
+<p>
+Boost Filesystem integration.
+</p>
+</li>
+</ul></div>
+<div class="sect2">
+<h3 id="_luabind_vs_sweet_lua">1.1. Luabind vs Sweet Lua</h3>
+<div class="paragraph"><p>Luabind is a C++/Lua binding library written by Daniel
+Wallin and Arvid Nordberg.  Documentation is available at
+<a href="http://www.rasterbar.com/products/luabind/docs.html">http://www.rasterbar.com/products/luabind/docs.html</a>.</p></div>
+<div class="paragraph"><p>Luabind provides more infrastructure for object oriented programming than
+Sweet Lua does.  Luabind provides explicit support for registering classes
+with the Lua environment while Sweet Lua provides support for calling member
+functions on objects but leaves the implementation of object orientation to
+the client.  We believe this is a more flexible approach and allows the
+scripting environment to more closely match the problem domain.</p></div>
+<div class="paragraph"><p>Luabind supports overloaded functions stored in the same value in Lua and
+uses best match signature matching based on the types of parameter passed
+when the function is called.  Sweet Lua supports overloaded functions but
+doesn&#8217;t do signature matching so overloaded functions must be stored in
+different values in the Lua virtual machine.  If parameters of the wrong type
+are passed then Sweet Lua generates an error.</p></div>
+<div class="paragraph"><p>Luabind uses return value and parameter policies to affect the way in which
+return values and parameters are passed between C++ and Lua.  Sweet Lua
+provides return value policies to generate raw, yielding, or weakening
+functions.</p></div>
+<div class="paragraph"><p>Luabind depends on Boost but Sweet Lua does not.</p></div>
+<div class="paragraph"><p>Luabind is tested on far more compilers while Sweet Lua is
+only tested and supported with Visual Studio 9.0.</p></div>
+<div class="paragraph"><p>In summary Luabind offers more out of the box support for C++
+style object orientation with Lua - it provides a C++ like
+environment in Lua.  Sweet Lua doesn&#8217;t provide as much out of
+the box support for object orientation - it provides a Lua like
+environment for C++ to host - with support for the style of
+object orientation and execution model more in control of the
+C++ application developer.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_swig_vs_sweet_lua">1.2. SWIG vs Sweet Lua</h3>
+<div class="paragraph"><p>SWIG (simple wrapper interface generator) generates code to
+interface C++ programs with scripting languages.  Documentation
+is available at
+<a href="http://www.swig.org/index.php">http://www.swig.org/index.php</a>.</p></div>
+<div class="paragraph"><p>SWIG generates C++ source code to provide bindings from C++
+header files and so requires an extra conversion step in addition
+to compilation.  Sweet Lua is written in straight C++ and so
+compiles as part of your source code.</p></div>
+<div class="paragraph"><p>SWIG generates bindings for many scripting languages as well
+as for Lua.  Sweet Lua only helps with binding to Lua.</p></div>
+<div class="paragraph"><p>In summary SWIG is probably better for you if you want to support
+binding to other languages in addition to Lua and if you don&#8217;t mind
+adding an additional generation step to your build.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation">2. Installation</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Sweet Lua is built and installed by downloading the latest version
+from <a href="http://www.sweetsoftware.co.nz/">http://www.sweetsoftware.co.nz/</a>, extracting the archive onto your
+computer, and then running "<tt>build</tt>" from the top level directory.
+This builds all variants for the host platform into the library directory.</p></div>
+<div class="paragraph"><p>You&#8217;ll need to add the top level directory (e.g. "<tt>c:\sweet\sweet_lua-2010.09.11</tt>")
+and the library directory (e.g. "<tt>c:\sweet\sweet_lua-2010.09.11\lib</tt>") to your
+compiler&#8217;s header and library search paths respectively.</p></div>
+<div class="paragraph"><p>If you want Sweet Lua built to another location or with different variants
+and/or settings then you&#8217;ll need to edit the settings in "<tt>sweet/build.lua</tt>".</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usage">3. Usage</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Sweet Lua is a C++ library for providing Lua bindings to C++ variables, functions,
+and objects.  It provides classes to represent the Lua virtual machine (Lua),
+a table or object (LuaObject), and a coroutine or thread (LuaThread).</p></div>
+<div class="paragraph"><p>The <strong>Lua</strong> class represents the Lua global environment and virtual machine.  It provides
+functions to execute Lua scripts from files and memory and to define Lua bindings
+to C++ variables, functions, and objects.</p></div>
+<div class="paragraph"><p>The <strong>LuaObject</strong> class represents an object in the Lua virtual machine.  It is typically
+used to create prototypes or metatables in Lua that have no equivalent C++ object
+to associate with non-intrusively.  When a LuaObject is constructed a corresponding
+table is created in the Lua global environment.  Both the C++ application and the Lua
+virtual machine can then set variables on and call member functions of that table.</p></div>
+<div class="paragraph"><p>The <strong>LuaThread</strong> class represents a Lua coroutine.  It provides functions to start and
+resume execution in a separate yieldable thread in the Lua virtual machine.  The
+calls can yield and return control from the virtual machine back to the program
+allowing asynchronous behaviour to be abstracted behind an interface that scripts
+can treat as synchronous.</p></div>
+<div class="sect2">
+<h3 id="_initialization">3.1. Initialization</h3>
+<div class="paragraph"><p>Initializing the library is as simple as constructing a Lua object to represent
+the global environment and virtual machine and registering the variables, functions,
+and objects in the interface being bound.</p></div>
+<div class="paragraph"><p>The library has no static state.  Creating multiple Lua objects poses no problems.
+However, like Lua itself, objects are not thread-safe.  Only one thread can call
+into a Lua virtual machine at once.</p></div>
+<div class="paragraph"><p>LuaObjects and LuaThreads may only be used only with the Lua object that they
+were created in (as they can only represent a table or coroutine in a single Lua
+virtual machine).</p></div>
+<div class="paragraph"><p>Once a Lua object has been created the values of variables can be set to the
+values of C++ booleans, integers, floats, strings, functions, and objects.</p></div>
+<div class="paragraph"><p>Setting a variable to the value of a C++ function sets the value of that variable
+to a C++ function that decodes the arguments expected by the target C++ function
+from the Lua stack, makes the call to the target C++ function, and pushes any
+return value back onto the Lua stack.</p></div>
+<div class="paragraph"><p>Parameters to a C++ function can be bound as upvalues when the function is
+registered.  Simply passing a value at the time of registration stores that
+value as an upvalue of the registered function in the Lua virtual machine.  The
+upvalue is then provided as a parameter when the C++ function is called by Lua.
+Any other parameters expected by the C++ function are mapped as per normal after
+the bound upvalues.</p></div>
+<div class="paragraph"><p>Parameters to a C++ function can be bound out of order using one of the out of
+order parameter values <tt>_1</tt>, <tt>_2</tt>, <tt>_3</tt>, <tt>_4</tt>, <tt>_5</tt>, or <tt>_6</tt>.  The number of
+the out of order parameter specifies the index of the Lua parameter that is to
+be provided to the C++ parameter at the position that it appears in (the same
+as Boost Bind).</p></div>
+<div class="paragraph"><p>Out of order parameters and upvalue binding can be used together to provide any
+combination of bound values and out of order parameters.</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="cp">#include &lt;sweet/lua/Lua.hpp&gt;</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;string.h&gt;</span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">sweet</span><span class="o">::</span><span class="n">lua</span><span class="p">;</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="n">print</span><span class="p">(</span> <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">message</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="n">message</span><span class="p">.</span><span class="n">c_str</span><span class="p">()</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">lua_hello_world_example</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Lua</span> <span class="n">lua</span><span class="p">;</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">globals</span><span class="p">()</span>
+        <span class="p">(</span> <span class="s">&quot;print&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">print</span> <span class="p">)</span>
+    <span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">script</span> <span class="o">=</span> <span class="s">&quot;print(&#39;Hello World!</span><span class="se">\\</span><span class="s">n&#39;)&quot;</span><span class="p">;</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">call</span><span class="p">(</span> <span class="n">script</span><span class="p">,</span> <span class="n">script</span> <span class="o">+</span> <span class="n">strlen</span><span class="p">(</span><span class="n">script</span><span class="p">),</span> <span class="s">&quot;hello_world&quot;</span> <span class="p">).</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div></div></div>
+</div>
+<div class="sect2">
+<h3 id="_scripts_and_functions">3.2. Scripts and Functions</h3>
+<div class="paragraph"><p>Scripts and functions are executed by calling <tt>Lua::call()</tt>,
+<tt>LuaThread::call()</tt>, or <tt>LuaThread::resume()</tt>.</p></div>
+<div class="paragraph"><p>All of these functions return a helper object that provides a convenient syntax
+for supplying the parameters to the call and getting the return value via
+<tt>AddParameter::end()</tt>.  It is important to call <tt>AddParameter::end()</tt> even
+if no parameters are passed and no return value is expected as this call
+does the actual execution.  If <tt>AddParameter::end()</tt> is not called then nothing
+will be executed.</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="cp">#include &lt;sweet/lua/Lua.hpp&gt;</span>
+<span class="cp">#include &lt;string.h&gt;</span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">sweet</span><span class="o">::</span><span class="n">lua</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="n">lua_factorial_example</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Lua</span> <span class="n">lua</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">script</span> <span class="o">=</span>
+        <span class="s">&quot;function factorial(n) </span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;   if n &lt;= 1 then </span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;       return 1 </span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;   else </span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;       return n * factorial(n - 1) </span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;   end </span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;end&quot;</span>
+    <span class="p">;</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">call</span><span class="p">(</span> <span class="n">script</span><span class="p">,</span> <span class="n">script</span> <span class="o">+</span> <span class="n">strlen</span><span class="p">(</span><span class="n">script</span><span class="p">),</span> <span class="s">&quot;factorial&quot;</span> <span class="p">)</span>
+    <span class="p">.</span><span class="n">end</span><span class="p">();</span>
+
+    <span class="kt">int</span> <span class="n">factorial</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">call</span><span class="p">(</span> <span class="s">&quot;factorial&quot;</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="mi">4</span> <span class="p">)</span>
+    <span class="p">.</span><span class="n">end</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">factorial</span> <span class="p">);</span>
+    <span class="n">SWEET_ASSERT</span><span class="p">(</span> <span class="n">factorial</span> <span class="o">==</span> <span class="mi">24</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div></div></div>
+</div>
+<div class="sect2">
+<h3 id="_objects">3.3. Objects</h3>
+<div class="paragraph"><p>By default C++ objects are stored in Lua as user data.  C++ objects passed to
+Lua are copy constructed into user data values.  When these user data values are
+garbage collected the destructor for the C++ object is automatically called and
+the memory allocated for them is freed.</p></div>
+<div class="paragraph"><p>More usefully C++ objects can be stored in Lua as tables.  C++ objects stored
+as tables are automatically converted to and from their equivalent table when
+passed to and from Lua.</p></div>
+<div class="paragraph"><p>The C++ class of objects to be represented by reference must have its
+storage type trait defined to LuaReference using the
+<tt>SWEET_LUA_TYPE_CONVERSION()</tt> macro so that the correct conversions are
+performed when passing objects of that class between C++ and Lua.</p></div>
+<div class="paragraph"><p>Lua tables that are associated with C++ objects are explicitly created and
+destroyed by users of the library through calls to <tt>Lua::create()</tt>,
+<tt>Lua::create_with_existing_table()</tt>, and <tt>Lua::destroy()</tt>.</p></div>
+<div class="paragraph"><p>Once the table has been created its fields can be set to the values of C++ booleans,
+integers, floats, strings, objects, and functions.  The fields can be cleared by
+setting their value to nil.  See <tt>Lua::members()</tt> and <tt>LuaObject::members()</tt>.</p></div>
+<div class="paragraph"><p>Two important fields that must always be set are the <tt>__type</tt> and <tt>__this</tt> fields
+that store the type information and this pointer for the C++ object respectively.
+This must be done explicitly by calling the <tt>AddMember::type()</tt> and
+<tt>AddMember::this_pointer()</tt> functions.</p></div>
+<div class="paragraph"><p>The value of a variable can be set to a member function.  The first parameter of
+these calls is always assumed to provide the this pointer of the object to make
+the call on.  This works with Lua&#8217;s mechanism of implicitly providing the <tt>self</tt>
+parameter to calls made using the ":" syntax.  The Lua table passed as the
+implicit <tt>self</tt> parameter is converted into its equivalent C++ object using
+its <tt>__type</tt> and <tt>__this</tt> fields.</p></div>
+<div class="paragraph"><p>Member functions that have been defined in a Lua script (using the ":" syntax
+or that take an explicit self parameter) on an object that corresponds to a
+C++ object can be called using the overload of the Lua::call() function that
+takes an object as its second parameter.  This looks up the function as a
+member of the object&#8217;s table but doesn&#8217;t pass the object&#8217;s table as the
+implicit first parameter to the call (the <tt>self</tt> parameter) - this must be
+done by the application itself.  This gives the application the opportunity
+to provide a different value for the <tt>self</tt> parameter.</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="cp">#include &lt;sweet/lua/Lua.hpp&gt;</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;string.h&gt;</span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">sweet</span><span class="o">::</span><span class="n">lua</span><span class="p">;</span>
+
+<span class="k">enum</span> <span class="n">LogMask</span>
+<span class="p">{</span>
+    <span class="n">LOG_NULL</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">,</span>
+    <span class="n">LOG_ERROR</span> <span class="o">=</span> <span class="mh">0x01</span><span class="p">,</span>
+    <span class="n">LOG_WARN</span> <span class="o">=</span> <span class="mh">0x02</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Log</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">level_</span><span class="p">;</span>
+
+    <span class="k">public</span><span class="o">:</span>
+        <span class="n">Log</span><span class="p">(</span> <span class="kt">int</span> <span class="n">level</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">level_</span><span class="p">(</span> <span class="n">level</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">set_level</span><span class="p">(</span> <span class="kt">int</span> <span class="n">level</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">level_</span> <span class="o">=</span> <span class="n">level</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">int</span> <span class="n">get_level</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">level_</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">log</span><span class="p">(</span> <span class="kt">int</span> <span class="n">level</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">format</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">level_</span> <span class="o">&amp;</span> <span class="n">level</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">format</span><span class="p">.</span><span class="n">c_str</span><span class="p">()</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">SWEET_LUA_TYPE_CONVERSION</span><span class="p">(</span> <span class="n">Log</span><span class="p">,</span> <span class="n">LuaByReference</span> <span class="p">);</span>
+
+<span class="kt">void</span> <span class="n">lua_logging_example</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Lua</span> <span class="n">lua</span><span class="p">;</span>
+
+    <span class="n">Log</span> <span class="n">log</span><span class="p">(</span> <span class="n">LOG_NULL</span> <span class="p">);</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">create</span><span class="p">(</span> <span class="n">log</span> <span class="p">);</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">members</span><span class="p">(</span> <span class="n">log</span> <span class="p">)</span>
+        <span class="p">.</span><span class="n">type</span><span class="p">(</span> <span class="n">SWEET_STATIC_TYPEID</span><span class="p">(</span><span class="n">Log</span><span class="p">)</span> <span class="p">)</span>
+        <span class="p">.</span><span class="n">this_pointer</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">log</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;LOG_NULL&quot;</span><span class="p">,</span> <span class="kt">int</span><span class="p">(</span><span class="n">LOG_NULL</span><span class="p">)</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;LOG_ERROR&quot;</span><span class="p">,</span> <span class="kt">int</span><span class="p">(</span><span class="n">LOG_ERROR</span><span class="p">)</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;LOG_WARN&quot;</span><span class="p">,</span> <span class="kt">int</span><span class="p">(</span><span class="n">LOG_WARN</span><span class="p">)</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;set_level&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Log</span><span class="o">::</span><span class="n">set_level</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;get_level&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Log</span><span class="o">::</span><span class="n">get_level</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;log&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Log</span><span class="o">::</span><span class="n">log</span> <span class="p">)</span>
+    <span class="p">;</span>
+
+    <span class="n">lua</span><span class="p">.</span><span class="n">globals</span><span class="p">()</span>
+        <span class="p">(</span> <span class="s">&quot;log&quot;</span><span class="p">,</span> <span class="n">log</span> <span class="p">)</span>
+    <span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">script</span> <span class="o">=</span>
+        <span class="s">&quot;log:set_level( log.LOG_ERROR + log.LOG_WARN );</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;log:log( log.LOG_ERROR, &#39;This is an error&#39; );</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;log:log( log.LOG_WARN, &#39;This is a warning&#39; );</span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="p">;</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">call</span><span class="p">(</span> <span class="n">script</span><span class="p">,</span> <span class="n">script</span> <span class="o">+</span> <span class="n">strlen</span><span class="p">(</span><span class="n">script</span><span class="p">),</span> <span class="s">&quot;logging&quot;</span> <span class="p">).</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div></div></div>
+</div>
+<div class="sect2">
+<h3 id="_classes_and_prototypes">3.4. Classes and Prototypes</h3>
+<div class="paragraph"><p>Lua is a prototype based language.</p></div>
+<div class="paragraph"><p>A prototype defines the behaviour of an object in a prototype based language.
+The relationship between an object and its prototype in a prototype based
+language is similar to the relationship between an object and a class in C++.</p></div>
+<div class="paragraph"><p>The prototype of an object is another object that index operations that fail on
+the first object are resolved on.  For example if a script calls the <tt>get_value</tt>
+function on an object but that doesn&#8217;t define a <tt>get_value</tt> function then the
+<em>get_value</em> function will then be looked up on that object&#8217;s prototype.  Because
+prototypes are themselves objects they can also have prototypes allowing for
+multiple levels of inheritance.</p></div>
+<div class="paragraph"><p>For more descriptions of object oriented programming in Lua and prototype based
+languages in general have a look at:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+"Programming in Lua" by Roberto Ierusalimschy.
+</p>
+</li>
+<li>
+<p>
+<a href="http://lua-users.org/wiki/SampleCode">http://lua-users.org/wiki/SampleCode</a>.
+</p>
+</li>
+<li>
+<p>
+<a href="http://en.wikipedia.org/wiki/Prototype-based_programming">http://en.wikipedia.org/wiki/Prototype-based_programming</a>
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Prototypes can be provided using the library by creating a LuaObject to use
+as the prototype table and a LuaObject to use as the metatable that redirects
+failed index operations to the prototype.  One or more objects are then set to
+use that prototype by setting their metatable to be the metatable created by
+the second LuaObject.  See <tt>AddMember::metatable()</tt>.</p></div>
+<div class="paragraph"><p>Note that in the following example the prototype table stores the <tt>__type</tt>
+field while the object itself stores the <tt>__this</tt> field.  This is correct.
+It is the prototype that is representing the type in this scenario while
+the object itself must provide the this pointer in order to resolve back
+to the correct C++ object.</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="cp">#include &lt;sweet/lua/Lua.hpp&gt;</span>
+<span class="cp">#include &lt;sweet/lua/LuaObject.hpp&gt;</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;string.h&gt;</span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">sweet</span><span class="o">::</span><span class="n">lua</span><span class="p">;</span>
+
+<span class="k">enum</span> <span class="n">LogMask</span>
+<span class="p">{</span>
+    <span class="n">LOG_NULL</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">,</span>
+    <span class="n">LOG_ERROR</span> <span class="o">=</span> <span class="mh">0x01</span><span class="p">,</span>
+    <span class="n">LOG_WARN</span> <span class="o">=</span> <span class="mh">0x02</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Log</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">level_</span><span class="p">;</span>
+
+    <span class="k">public</span><span class="o">:</span>
+        <span class="n">Log</span><span class="p">(</span> <span class="kt">int</span> <span class="n">level</span> <span class="p">)</span>
+        <span class="o">:</span> <span class="n">level_</span><span class="p">(</span> <span class="n">level</span> <span class="p">)</span>
+        <span class="p">{</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">set_level</span><span class="p">(</span> <span class="kt">int</span> <span class="n">level</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">level_</span> <span class="o">=</span> <span class="n">level</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">int</span> <span class="n">get_level</span><span class="p">()</span> <span class="k">const</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="n">level_</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="n">log</span><span class="p">(</span> <span class="kt">int</span> <span class="n">level</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">format</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span> <span class="n">level_</span> <span class="o">&amp;</span> <span class="n">level</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">format</span><span class="p">.</span><span class="n">c_str</span><span class="p">()</span> <span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">SWEET_LUA_TYPE_CONVERSION</span><span class="p">(</span> <span class="n">Log</span><span class="p">,</span> <span class="n">LuaByReference</span> <span class="p">);</span>
+
+<span class="kt">void</span> <span class="n">lua_logging_prototype_example</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Lua</span> <span class="n">lua</span><span class="p">;</span>
+
+    <span class="n">LuaObject</span> <span class="n">log_prototype</span><span class="p">(</span> <span class="n">lua</span> <span class="p">);</span>
+    <span class="n">log_prototype</span><span class="p">.</span><span class="n">members</span><span class="p">()</span>
+        <span class="p">.</span><span class="n">type</span><span class="p">(</span> <span class="n">SWEET_STATIC_TYPEID</span><span class="p">(</span><span class="n">Log</span><span class="p">)</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;LOG_NULL&quot;</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">LOG_NULL</span><span class="p">)</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;LOG_ERROR&quot;</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">LOG_ERROR</span><span class="p">)</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;LOG_WARN&quot;</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">LOG_WARN</span><span class="p">)</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;set_level&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Log</span><span class="o">::</span><span class="n">set_level</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;get_level&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Log</span><span class="o">::</span><span class="n">get_level</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;log&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Log</span><span class="o">::</span><span class="n">log</span> <span class="p">)</span>
+    <span class="p">;</span>
+
+    <span class="n">LuaObject</span> <span class="n">log_metatable</span><span class="p">(</span> <span class="n">lua</span> <span class="p">);</span>
+    <span class="n">log_metatable</span><span class="p">.</span><span class="n">members</span><span class="p">()</span>
+        <span class="p">(</span> <span class="s">&quot;__index&quot;</span><span class="p">,</span> <span class="n">log_prototype</span> <span class="p">)</span>
+    <span class="p">;</span>
+
+    <span class="n">Log</span> <span class="n">log</span><span class="p">(</span> <span class="n">LOG_NULL</span> <span class="p">);</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">create</span><span class="p">(</span> <span class="n">log</span> <span class="p">);</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">members</span><span class="p">(</span> <span class="n">log</span> <span class="p">)</span>
+        <span class="p">.</span><span class="n">metatable</span><span class="p">(</span> <span class="n">log_metatable</span> <span class="p">)</span>
+        <span class="p">.</span><span class="n">this_pointer</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">log</span> <span class="p">)</span>
+    <span class="p">;</span>
+
+    <span class="n">lua</span><span class="p">.</span><span class="n">globals</span><span class="p">()</span>
+        <span class="p">(</span> <span class="s">&quot;log&quot;</span><span class="p">,</span> <span class="n">log</span> <span class="p">)</span>
+    <span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">script</span> <span class="o">=</span>
+        <span class="s">&quot;log:set_level( log.LOG_ERROR + log.LOG_WARN );</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;log:log( log.LOG_ERROR, &#39;This is an error&#39; );</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;log:log( log.LOG_WARN, &#39;This is a warning&#39; );</span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="p">;</span>
+
+    <span class="n">lua</span><span class="p">.</span><span class="n">call</span><span class="p">(</span> <span class="n">script</span><span class="p">,</span> <span class="n">script</span> <span class="o">+</span> <span class="n">strlen</span><span class="p">(</span><span class="n">script</span><span class="p">),</span> <span class="s">&quot;logging&quot;</span> <span class="p">).</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div></div></div>
+</div>
+<div class="sect2">
+<h3 id="_weak_objects">3.5. Weak Objects</h3>
+<div class="paragraph"><p>Often an application will give Lua script ownership of the lifetime of the
+objects that it creates.  The simplest way to do this is to store an
+object by value in the Lua table to manage the lifetime of the C++ object
+(for example a reference counted pointer back to the original C++ object).
+This unfortunately causes a memory leak because the C++ object is associated
+with the table through a strong reference stored in the Lua registry at the
+same time as the table is referencing the C++ object via a reference
+counted smart pointer or some other mechanism that maintains a strong reference.
+This cycle allows the C++ object and the Lua table to live forever.</p></div>
+<div class="paragraph"><p>To break the cycle the table can be stored in a special weak objects table.
+This weakens the reference from the C++ object to the Lua table allowing
+Lua to garbage collect the table when it is no longer referenced (because
+the C++ side is no longer holding a strong reference to it only the references
+that Lua itself holds are counted towards keeping it alive) and when this
+happens, provided that the lifetime management object (e.g. the reference
+counted pointer) has an appropriate destructor, the C++ object will also
+be destroyed.</p></div>
+<div class="paragraph"><p>Objects are weakened when returned from C++ functions that have been
+registered using the <tt>weaken()</tt> policy.  The weakened table is moved from the
+Lua registry to the weak objects table while a strong reference is still held
+to it from the returned value on the Lua stack.  Weakening is implemented
+this way so that there is always a strong reference to the object to prevent
+it being garbage collected at least up until the point where user code can
+maintain its own strong reference to it.  This prevents the weak object being
+garbage collected before user code has had an opportunity to do something
+with it.</p></div>
+<div class="paragraph"><p>The typical implementation of this uses shared_ptrs with a custom deleter to
+ensure that <tt>Lua::destroy()</tt> is called to remove the dangling weak reference
+from the weak objects table.</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="cp">#if defined SWEET_BOOST_ENABLED</span>
+
+<span class="cp">#include &lt;sweet/lua.hpp&gt;</span>
+<span class="cp">#include &lt;sweet/lua/shared_ptr.hpp&gt;</span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">boost</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">sweet</span><span class="o">::</span><span class="n">lua</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Log</span><span class="p">;</span>
+<span class="n">SWEET_LUA_TYPE_CONVERSION</span><span class="p">(</span> <span class="n">Log</span><span class="p">,</span> <span class="n">LuaReference</span> <span class="p">);</span>
+
+<span class="k">enum</span> <span class="n">LogMask</span>
+<span class="p">{</span>
+    <span class="n">LOG_NULL</span> <span class="o">=</span> <span class="mh">0x00</span><span class="p">,</span>
+    <span class="n">LOG_ERROR</span> <span class="o">=</span> <span class="mh">0x01</span><span class="p">,</span>
+    <span class="n">LOG_WARN</span> <span class="o">=</span> <span class="mh">0x02</span>
+<span class="p">};</span>
+
+
+<span class="k">class</span> <span class="nc">Log</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">level_</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Log</span><span class="p">(</span> <span class="kt">int</span> <span class="n">level</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">level_</span><span class="p">(</span> <span class="n">level</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">set_level</span><span class="p">(</span> <span class="kt">int</span> <span class="n">level</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">level_</span> <span class="o">=</span> <span class="n">level</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">get_level</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">level_</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">log</span><span class="p">(</span> <span class="kt">int</span> <span class="n">level</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">format</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="n">level_</span> <span class="o">&amp;</span> <span class="n">level</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">format</span><span class="p">.</span><span class="n">c_str</span><span class="p">()</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+
+<span class="k">struct</span> <span class="n">LogCreator</span>
+<span class="p">{</span>
+    <span class="n">Lua</span><span class="o">*</span> <span class="n">lua_</span><span class="p">;</span>
+    <span class="n">LuaObject</span><span class="o">*</span> <span class="n">log_metatable_</span><span class="p">;</span>
+
+    <span class="n">LogCreator</span><span class="p">(</span> <span class="n">Lua</span><span class="o">*</span> <span class="n">lua</span><span class="p">,</span> <span class="n">LuaObject</span><span class="o">*</span> <span class="n">log_metatable</span> <span class="p">)</span>
+    <span class="o">:</span> <span class="n">lua_</span><span class="p">(</span> <span class="n">lua</span> <span class="p">),</span>
+      <span class="n">log_metatable_</span><span class="p">(</span> <span class="n">log_metatable</span> <span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Log</span><span class="o">&gt;</span> <span class="n">create</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">struct</span> <span class="n">LogDeleter</span>
+        <span class="p">{</span>
+            <span class="n">Lua</span><span class="o">*</span> <span class="n">lua_</span><span class="p">;</span>
+
+            <span class="n">LogDeleter</span><span class="p">(</span> <span class="n">Lua</span><span class="o">*</span> <span class="n">lua</span> <span class="p">)</span>
+            <span class="o">:</span> <span class="n">lua_</span><span class="p">(</span> <span class="n">lua</span> <span class="p">)</span>
+            <span class="p">{</span>
+            <span class="p">}</span>
+
+            <span class="kt">void</span> <span class="k">operator</span><span class="p">()(</span> <span class="n">Log</span><span class="o">*</span> <span class="n">log</span> <span class="p">)</span> <span class="k">const</span>
+            <span class="p">{</span>
+                <span class="n">lua_</span><span class="o">-&gt;</span><span class="n">destroy</span><span class="p">(</span> <span class="o">*</span><span class="n">log</span> <span class="p">);</span>
+                <span class="k">delete</span> <span class="n">log</span><span class="p">;</span>
+                <span class="n">log</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+
+        <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Log</span><span class="o">&gt;</span> <span class="n">log</span><span class="p">(</span> <span class="k">new</span> <span class="n">Log</span><span class="p">(</span><span class="n">LOG_NULL</span><span class="p">),</span> <span class="n">LogDeleter</span><span class="p">(</span><span class="n">lua_</span><span class="p">)</span> <span class="p">);</span>
+        <span class="n">lua_</span><span class="o">-&gt;</span><span class="n">create</span><span class="p">(</span> <span class="o">*</span><span class="n">log</span> <span class="p">);</span>
+        <span class="n">lua_</span><span class="o">-&gt;</span><span class="n">members</span><span class="p">(</span> <span class="o">*</span><span class="n">log</span> <span class="p">)</span>
+            <span class="p">.</span><span class="n">metatable</span><span class="p">(</span> <span class="o">*</span><span class="n">log_metatable_</span> <span class="p">)</span>
+            <span class="p">.</span><span class="n">this_pointer</span><span class="p">(</span> <span class="n">log</span><span class="p">.</span><span class="n">get</span><span class="p">()</span> <span class="p">)</span>
+            <span class="p">(</span> <span class="s">&quot;ptr&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">(</span><span class="n">log</span><span class="p">)</span> <span class="p">)</span>
+        <span class="p">;</span>
+        <span class="k">return</span> <span class="n">log</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="n">lua_logging_owned_by_lua_example</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Lua</span> <span class="n">lua</span><span class="p">;</span>
+
+    <span class="n">LuaObject</span> <span class="n">log_prototype</span><span class="p">(</span> <span class="n">lua</span> <span class="p">);</span>
+    <span class="n">log_prototype</span><span class="p">.</span><span class="n">members</span><span class="p">()</span>
+        <span class="p">.</span><span class="n">type</span><span class="p">(</span> <span class="n">SWEET_STATIC_TYPEID</span><span class="p">(</span><span class="n">Log</span><span class="p">)</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;LOG_NULL&quot;</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">LOG_NULL</span><span class="p">)</span>  <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;LOG_ERROR&quot;</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">LOG_ERROR</span><span class="p">)</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;LOG_WARN&quot;</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">LOG_WARN</span><span class="p">)</span>  <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;set_level&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Log</span><span class="o">::</span><span class="n">set_level</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;get_level&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Log</span><span class="o">::</span><span class="n">get_level</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;log&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Log</span><span class="o">::</span><span class="n">log</span>       <span class="p">)</span>
+    <span class="p">;</span>
+
+    <span class="n">LuaObject</span> <span class="n">log_metatable</span><span class="p">(</span> <span class="n">lua</span> <span class="p">);</span>
+    <span class="n">log_metatable</span><span class="p">.</span><span class="n">members</span><span class="p">()</span>
+        <span class="p">.</span><span class="n">type</span><span class="p">(</span> <span class="n">SWEET_STATIC_TYPEID</span><span class="p">(</span><span class="n">LuaObject</span><span class="p">)</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;__index&quot;</span><span class="p">,</span> <span class="n">log_prototype</span> <span class="p">)</span>
+    <span class="p">;</span>
+
+    <span class="n">LogCreator</span> <span class="n">log_creator</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">lua</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">log_metatable</span> <span class="p">);</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">globals</span><span class="p">()</span>
+        <span class="p">(</span> <span class="s">&quot;Log&quot;</span><span class="p">,</span> <span class="n">weaken</span><span class="p">(</span><span class="o">&amp;</span><span class="n">LogCreator</span><span class="o">::</span><span class="n">create</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">log_creator</span> <span class="p">)</span>
+    <span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">script</span> <span class="o">=</span>
+        <span class="s">&quot;local log = Log();</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;log:set_level( log.LOG_ERROR + log.LOG_WARN );</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;log:log( log.LOG_ERROR, &#39;This is an error&#39; );</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="s">&quot;log:log( log.LOG_WARN, &#39;This is a warning&#39; );</span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="p">;</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">call</span><span class="p">(</span> <span class="n">script</span><span class="p">,</span> <span class="n">script</span> <span class="o">+</span> <span class="n">strlen</span><span class="p">(</span><span class="n">script</span><span class="p">),</span> <span class="s">&quot;logging&quot;</span><span class="p">,</span> <span class="mi">0</span> <span class="p">).</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="cp">#else</span>
+
+<span class="kt">void</span> <span class="n">lua_logging_owned_by_lua_example</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="p">}</span>
+
+<span class="cp">#endif</span>
+</pre></div></div></div>
+</div>
+<div class="sect2">
+<h3 id="_coroutines">3.6. Coroutines</h3>
+<div class="paragraph"><p>The library provides support for coroutines through the LuaThread object and
+the <tt>yield()</tt> policy that is used to generate a C++ function that yields after
+it has been called.</p></div>
+<div class="paragraph"><p>The LuaThread object is constructed just like a LuaObject.  Once constructed
+it then behaves similarly to a Lua object except that it can resume functions
+as well as call them.</p></div>
+<div class="paragraph"><p>The <tt>yield()</tt> function is used to wrap the function pointer passed in when
+setting the value of C++ functions.  It marks the function as needing to
+generate a yield on return instead of returning control to Lua.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_standard_template_library_integration">3.7. Standard Template Library Integration</h3>
+<div class="paragraph"><p>There is a small amount of integration with the Standard Template Library.  The
+standard containers vector, list, set, multiset, map, and multimap can all be
+implicitly converted into Lua iterators that iterates over their [<em>begin</em>, <em>end</em>)
+sequences.</p></div>
+<div class="paragraph"><p>There is also a <tt>lua_push()</tt> implementation that will take two STL iterators (
+<em>first</em> and <em>last</em>) and convert them into a Lua iterator that iterates over the
+[<em>first</em>, <em>last</em>) sequence.  This makes it simple to convert other C++
+sequences to Lua iterators by providing the right overloaded <tt>lua_push()</tt>
+function and converting the sequence into a Lua iterator.</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="cp">#include &lt;sweet/lua/Lua.hpp&gt;</span>
+<span class="cp">#include &lt;sweet/lua/vector.hpp&gt;</span>
+<span class="cp">#include &lt;sweet/rtti/macros.hpp&gt;</span>
+<span class="cp">#include &lt;string&gt;</span>
+<span class="cp">#include &lt;string.h&gt;</span>
+
+<span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">;</span>
+<span class="k">using</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">sweet</span><span class="o">::</span><span class="n">lua</span><span class="p">;</span>
+
+<span class="k">struct</span> <span class="n">Target</span>
+<span class="p">{</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">values_</span><span class="p">;</span>
+
+    <span class="n">Target</span><span class="p">()</span>
+    <span class="o">:</span> <span class="n">values_</span><span class="p">()</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">add_value</span><span class="p">(</span> <span class="k">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">value</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">values_</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">value</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">get_values</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">values_</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">SWEET_LUA_TYPE_CONVERSION</span><span class="p">(</span> <span class="n">Target</span><span class="p">,</span> <span class="n">LuaByReference</span> <span class="p">);</span>
+
+<span class="kt">void</span> <span class="n">lua_vector_example</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Target</span> <span class="n">target</span><span class="p">;</span>
+    <span class="n">target</span><span class="p">.</span><span class="n">add_value</span><span class="p">(</span> <span class="s">&quot;one&quot;</span> <span class="p">);</span>
+    <span class="n">target</span><span class="p">.</span><span class="n">add_value</span><span class="p">(</span> <span class="s">&quot;two&quot;</span> <span class="p">);</span>
+    <span class="n">target</span><span class="p">.</span><span class="n">add_value</span><span class="p">(</span> <span class="s">&quot;three&quot;</span> <span class="p">);</span>
+
+    <span class="n">Lua</span> <span class="n">lua</span><span class="p">;</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">create</span><span class="p">(</span> <span class="n">target</span> <span class="p">);</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">members</span><span class="p">(</span> <span class="n">target</span> <span class="p">)</span>
+        <span class="p">.</span><span class="n">type</span><span class="p">(</span> <span class="n">SWEET_STATIC_TYPEID</span><span class="p">(</span><span class="n">Target</span><span class="p">)</span> <span class="p">)</span>
+        <span class="p">.</span><span class="n">this_pointer</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">target</span> <span class="p">)</span>
+        <span class="p">(</span> <span class="s">&quot;get_values&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">Target</span><span class="o">::</span><span class="n">get_values</span> <span class="p">)</span>
+    <span class="p">;</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">globals</span><span class="p">()</span>
+        <span class="p">(</span> <span class="s">&quot;target&quot;</span><span class="p">,</span> <span class="n">target</span> <span class="p">)</span>
+    <span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">script</span> <span class="o">=</span> <span class="s">&quot;for v in target:get_values() do print(v) end;&quot;</span><span class="p">;</span>
+    <span class="n">lua</span><span class="p">.</span><span class="n">call</span><span class="p">(</span> <span class="n">script</span><span class="p">,</span> <span class="n">script</span> <span class="o">+</span> <span class="n">strlen</span><span class="p">(</span><span class="n">script</span><span class="p">),</span> <span class="s">&quot;log&quot;</span> <span class="p">).</span><span class="n">end</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div></div></div>
+</div>
+<div class="sect2">
+<h3 id="_boost_integration">3.8. Boost Integration</h3>
+<div class="paragraph"><p>There is a small amount of integration with the Boost Filesystem library.  The
+<tt>basic_directory_iterator&lt;&gt;</tt> and <tt>basic_recursive_directory_iterator&lt;&gt;</tt>
+iterators are implicitly converted into Lua iterators that iterate from the
+specified iterator to the default constructed "end" iterator.  The
+<tt>basic_directory_enrty&lt;&gt;</tt> class template is implicitly converted into a
+string.</p></div>
+<div class="listingblock">
+<div class="content"><div class="highlight"><pre><span class="cp">#include &lt;sweet/lua/filesystem.hpp&gt;</span>
+</pre></div></div></div>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes"><hr /></div>
+<div id="footer">
+<div id="footer-text">
+Copyright (C) 2006 - 2011 Charles Baker.  All rights reserved.
+</div>
+</div>
+</body>
+</html>
