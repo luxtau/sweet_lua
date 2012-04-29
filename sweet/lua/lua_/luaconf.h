@@ -8,8 +8,11 @@
 #ifndef lconfig_h
 #define lconfig_h
 
-#include <limits.h>
-#include <stddef.h>
+#include <climits>
+#include <cstddef>
+using std::ptrdiff_t;
+
+
 
 
 /*
@@ -17,31 +20,8 @@
 ** Search for "@@" to find all configurable definitions.
 ** ===================================================================
 */
-// SWEET begin
-// 
-// Add automatic linking pragma.
-//
-#ifndef BUILD_MODULE_LIBLUA
-#pragma comment( lib, "liblua" BUILD_LIBRARY_SUFFIX )
-#endif
-// SWEET end
 
-// SWEET begin
-//
-// Make sure that project wide preprocessor settings are included.
-//
-#include <sweet/build.hpp>
-// SWEET end
 
-// SWEET begin
-//
-// Add support for assertions if the macro SWEET_ASSERT_ENABLED is defined.
-//
-#if defined(SWEET_ASSERT_ENABLED)
-#include <sweet/assert/assert.hpp>
-#define lua_assert( x ) sweet::assert::sweet_assert( (x), #x, __FILE__, __LINE__ )
-#endif
-// SWEET end
 
 /*
 @@ LUA_ANSI controls the use of non-ansi features.
@@ -115,7 +95,7 @@
 		".\\?.lua;"  LUA_LDIR"?.lua;"  LUA_LDIR"?\\init.lua;" \
 		             LUA_CDIR"?.lua;"  LUA_CDIR"?\\init.lua"
 #define LUA_CPATH_DEFAULT \
-	".\\?.dll;"  LUA_CDIR"?.dll;" LUA_CDIR"loadall.dll"
+	".\\?.dll;"  ".\\?51.dll;"  LUA_CDIR"?.dll;" LUA_CDIR"?51.dll;" LUA_CDIR"clibs\\?.dll;" LUA_CDIR"clibs\\?51.dll;" LUA_CDIR"loadall.dll;" LUA_CDIR"clibs\\loadall.dll"
 
 #else
 #define LUA_ROOT	"/usr/local/"
@@ -125,7 +105,7 @@
 		"./?.lua;"  LUA_LDIR"?.lua;"  LUA_LDIR"?/init.lua;" \
 		            LUA_CDIR"?.lua;"  LUA_CDIR"?/init.lua"
 #define LUA_CPATH_DEFAULT \
-	"./?.so;"  LUA_CDIR"?.so;" LUA_CDIR"loadall.so"
+	"./?.so;"  "./lib?51.so;"  LUA_CDIR"?.so;" LUA_CDIR"lib?51.so;" LUA_CDIR"loadall.so"
 #endif
 
 
@@ -164,7 +144,7 @@
 ** CHANGE that if ptrdiff_t is not adequate on your machine. (On most
 ** machines, ptrdiff_t gives a good choice between int or long.)
 */
-#define LUA_INTEGER	ptrdiff_t
+typedef std::ptrdiff_t LUA_INTEGER;
 
 
 /*
@@ -175,14 +155,6 @@
 ** the libraries, you may want to use the following definition (define
 ** LUA_BUILD_AS_DLL to get it).
 */
-// SWEET begin
-//  Define LUA_BUILD_AS_DLL to get the correct declspec declaration when
-//  Lua is being built or used as a dynamic library.
-//
-#if defined(BUILD_MODULE_LIBLUA) && defined(_DLL)
-#define LUA_BUILD_AS_DLL
-#endif 
-// SWEET end
 #if defined(LUA_BUILD_AS_DLL)
 
 #if defined(LUA_CORE) || defined(LUA_LIB)
@@ -193,7 +165,7 @@
 
 #else
 
-#define LUA_API		extern
+#define LUA_API		extern "C"
 
 #endif
 
@@ -260,8 +232,8 @@
 #include <unistd.h>
 #define lua_stdin_is_tty()	isatty(0)
 #elif defined(LUA_WIN)
-#include <io.h>
-#include <stdio.h>
+//#include <io.h>
+//#include <stdio.h>
 #define lua_stdin_is_tty()	_isatty(_fileno(stdin))
 #else
 #define lua_stdin_is_tty()	1  /* assume stdin is a tty */
@@ -407,7 +379,7 @@
 ** with Lua. A useful redefinition is to use assert.h.
 */
 #if defined(LUA_USE_APICHECK)
-#include <assert.h>
+#include <cassert>
 #define luai_apicheck(L,o)	{ (void)L; assert(o); }
 #else
 #define luai_apicheck(L,o)	{ (void)L; }
@@ -561,7 +533,7 @@
 @@ The luai_num* macros define the primitive operations over numbers.
 */
 #if defined(LUA_CORE)
-#include <math.h>
+#include <cmath>
 #define luai_numadd(a,b)	((a)+(b))
 #define luai_numsub(a,b)	((a)-(b))
 #define luai_nummul(a,b)	((a)*(b))
