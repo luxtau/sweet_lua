@@ -11,6 +11,11 @@
 using namespace sweet;
 using namespace sweet::lua;
 
+LuaPreprocessReader::~LuaPreprocessReader()
+{
+  delete block_;
+}
+
 LuaPreprocessReader::LuaPreprocessReader( lua_Reader reader, void* context, size_t block_size )
 : prefix_( PREFIX_KEYWORD ),
   prefix_end_( PREFIX_KEYWORD  + strlen(PREFIX_KEYWORD ) ),
@@ -27,13 +32,13 @@ LuaPreprocessReader::LuaPreprocessReader( lua_Reader reader, void* context, size
   reader_( reader ),
   context_( context ),
   state_( STATE_NULL ),
-  block_( block_size, 0 ),
+  block_( new std::vector<char>(block_size, 0) ),
   position_( NULL ),
   position_end_( NULL ),
   source_( NULL ),
   source_end_( NULL ),
-  destination_( &block_[0] ),
-  destination_end_( &block_[0] + block_.size() )
+  destination_( block_->begin() ),
+  destination_end_( block_->end() )
 {
     SWEET_ASSERT( prefix_ );
     SWEET_ASSERT( suffix_ );
@@ -79,8 +84,8 @@ void LuaPreprocessReader::set_pre_and_post_expression( const char* pre_expressio
 
 const char* LuaPreprocessReader::read( lua_State* lua_state, size_t* size )
 {
-    destination_ = &block_[0];
-    destination_end_ = destination_ + block_.size();
+    destination_ = block_->begin();
+    destination_end_ = block_->end();
     size_t source_size = 1;
     while ( destination_ < destination_end_ && source_size > 0 )
     {
@@ -149,8 +154,8 @@ const char* LuaPreprocessReader::read( lua_State* lua_state, size_t* size )
     }
 
     SWEET_ASSERT( size );
-    *size = destination_ - &block_[0];    
-    return &block_[0];
+    *size = destination_ - block_->begin();    
+    return block_->begin();
 }
 
 const char* LuaPreprocessReader::reader( lua_State* lua_state, void* context, size_t* size )
@@ -163,7 +168,7 @@ const char* LuaPreprocessReader::reader( lua_State* lua_state, void* context, si
 void LuaPreprocessReader::null()
 {
     SWEET_ASSERT( state_ == STATE_NULL );
-    SWEET_ASSERT( destination_ >= &block_[0] && destination_ < destination_end_ );
+    SWEET_ASSERT( destination_ >= block_->begin() && destination_ < destination_end_ );
 
     if ( position_ < position_end_ )
     {
@@ -182,7 +187,7 @@ void LuaPreprocessReader::null()
 void LuaPreprocessReader::lua()
 {
     SWEET_ASSERT( state_ == STATE_LUA );
-    SWEET_ASSERT( destination_ >= &block_[0] && destination_ < destination_end_ );
+    SWEET_ASSERT( destination_ >= block_->begin() && destination_ < destination_end_ );
 
     while ( destination_ < destination_end_ && position_ < position_end_ && !is_suffix(position_, position_end_) )
     {
@@ -202,7 +207,7 @@ void LuaPreprocessReader::pre_literal()
 {
     SWEET_ASSERT( state_ == STATE_PRE_LITERAL );
     SWEET_ASSERT( position_ >= pre_literal_ && position_ < pre_literal_end_ );
-    SWEET_ASSERT( destination_ >= &block_[0] && destination_ < destination_end_ );
+    SWEET_ASSERT( destination_ >= block_->begin() && destination_ < destination_end_ );
 
     while ( destination_ < destination_end_ && position_ < position_end_ )
     {
@@ -220,7 +225,7 @@ void LuaPreprocessReader::pre_literal()
 void LuaPreprocessReader::literal_()
 {
     SWEET_ASSERT( state_ == STATE_LITERAL );
-    SWEET_ASSERT( destination_ >= &block_[0] && destination_ < destination_end_ );
+    SWEET_ASSERT( destination_ >= block_->begin() && destination_ < destination_end_ );
 
     while ( destination_ < destination_end_ && position_ < position_end_ && !is_post_literal(position_, position_end_)  && !is_prefix(position_, position_end_))
     {
@@ -248,7 +253,7 @@ void LuaPreprocessReader::post_literal()
 {
     SWEET_ASSERT( state_ == STATE_POST_LITERAL );
     SWEET_ASSERT( position_ >= post_literal_ && position_ < post_literal_end_ );
-    SWEET_ASSERT( destination_ >= &block_[0] && destination_ < destination_end_ );
+    SWEET_ASSERT( destination_ >= block_->begin() && destination_ < destination_end_ );
 
     while ( destination_ < destination_end_ && position_ != position_end_ )
     {
@@ -268,7 +273,7 @@ void LuaPreprocessReader::escape_embedded_post_literal()
 {
     SWEET_ASSERT( state_ == STATE_ESCAPE_EMBEDDED_POST_LITERAL );
     SWEET_ASSERT( position_ >= post_literal_ && position_ < post_literal_end_ );
-    SWEET_ASSERT( destination_ >= &block_[0] && destination_ < destination_end_ );
+    SWEET_ASSERT( destination_ >= block_->begin() && destination_ < destination_end_ );
 
 //
 // Escape the embedded post literal using the decimal values of the characters
@@ -306,7 +311,7 @@ void LuaPreprocessReader::pre_expression()
 {
     SWEET_ASSERT( state_ == STATE_PRE_EXPRESSION );
     SWEET_ASSERT( position_ >= pre_expression_ && position_ < pre_expression_end_ );
-    SWEET_ASSERT( destination_ >= &block_[0] && destination_ < destination_end_ );
+    SWEET_ASSERT( destination_ >= block_->begin() && destination_ < destination_end_ );
 
     while ( destination_ < destination_end_ && position_ < position_end_ )
     {
@@ -324,7 +329,7 @@ void LuaPreprocessReader::pre_expression()
 void LuaPreprocessReader::expression()
 {
     SWEET_ASSERT( state_ == STATE_EXPRESSION );
-    SWEET_ASSERT( destination_ >= &block_[0] && destination_ < destination_end_ );
+    SWEET_ASSERT( destination_ >= block_->begin() && destination_ < destination_end_ );
 
     while ( destination_ < destination_end_ && position_ < position_end_ && !is_suffix(position_, position_end_) )
     {
@@ -344,7 +349,7 @@ void LuaPreprocessReader::post_expression()
 {
     SWEET_ASSERT( state_ == STATE_POST_EXPRESSION );
     SWEET_ASSERT( position_ >= post_expression_ && position_ < post_expression_end_ );
-    SWEET_ASSERT( destination_ >= &block_[0] && destination_ < destination_end_ );
+    SWEET_ASSERT( destination_ >= block_->begin() && destination_ < destination_end_ );
 
     while ( destination_ < destination_end_ && position_ != position_end_ )
     {

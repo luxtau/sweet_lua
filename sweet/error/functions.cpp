@@ -10,6 +10,7 @@
 #include <exception>
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 
 using namespace sweet::error;
 
@@ -68,9 +69,11 @@ void error( const Error& error )
     }
     else
     {
-        ::fputs( error.what(), stderr );
-        ::fputs( ".\n", stderr );
-        ::exit( EXIT_FAILURE );
+      std::cerr << error.what() << ".\n" << std::endl;
+      std::exit(1);
+        //::fputs( error.what(), stderr );
+        //::fputs( ".\n", stderr );
+        //::exit( EXIT_FAILURE );
     }
 }
 
@@ -93,9 +96,11 @@ void error( const std::exception& exception )
     }
     else
     {
-        ::fputs( exception.what(), stderr );
-        ::fputs( ".\n", stderr );
-        ::exit( EXIT_FAILURE );
+      std::cerr << exception.what() << ".\n" << std::endl;
+      std::exit(1);
+        //::fputs( exception.what(), stderr );
+        //::fputs( ".\n", stderr );
+        //::exit( EXIT_FAILURE );
     }
 }
 

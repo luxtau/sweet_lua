@@ -6,7 +6,8 @@
 #ifndef SWEET_LUA_FILESYSTEM_HPP_INCLUDED
 #define SWEET_LUA_FILESYSTEM_HPP_INCLUDED
 
-#include <boost/filesystem.hpp>
+#include <tr2/files.hxx>
+// TODO: port this to tr2::files
 
 namespace sweet
 {

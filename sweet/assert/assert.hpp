@@ -5,20 +5,21 @@
 
 #ifndef SWEET_ASSERT_ASSERT_HPP_INCLUDED
 #define SWEET_ASSERT_ASSERT_HPP_INCLUDED
+#include <sweet/build.hpp>
 
 #if defined(BUILD_MODULE_ASSERT) && defined(BUILD_LIBRARY_TYPE_DYNAMIC)
 #define SWEET_ASSERT_DECLSPEC __declspec(dllexport)
 #elif defined(BUILD_LIBRARY_TYPE_DYNAMIC)
 #define SWEET_ASSERT_DECLSPEC __declspec(dllimport)
 #else
+#error must be used only as DLL
 #define SWEET_ASSERT_DECLSPEC
 #endif 
 
-#include <sweet/build.hpp>
 
-#ifndef BUILD_MODULE_ASSERT
-#pragma comment( lib, "assert" BUILD_LIBRARY_SUFFIX )
-#endif
+//#ifndef BUILD_MODULE_ASSERT
+//#pragma comment( lib, "assert" BUILD_LIBRARY_SUFFIX )
+//#endif
 
 namespace sweet
 {

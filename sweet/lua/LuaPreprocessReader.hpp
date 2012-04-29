@@ -65,7 +65,7 @@ class SWEET_LUA_DECLSPEC LuaPreprocessReader
     lua_Reader reader_;
     void* context_;
     State state_;
-    std::vector<char> block_;
+    std::vector<char>* block_;
     const char* position_;
     const char* position_end_;
     const char* source_;
@@ -74,6 +74,7 @@ class SWEET_LUA_DECLSPEC LuaPreprocessReader
     char* destination_end_;
 
     public:
+      ~LuaPreprocessReader();
         LuaPreprocessReader( lua_Reader reader, void* context, size_t block_size = 4096 );
         void set_prefix_and_suffix( const char* prefix, const char* suffix );
         void set_pre_and_post_literal( const char* pre_literal, const char* post_literal );

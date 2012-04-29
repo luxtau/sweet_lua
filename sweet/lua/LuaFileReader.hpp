@@ -25,12 +25,14 @@ namespace lua
 */
 class SWEET_LUA_DECLSPEC LuaFileReader
 {
-    std::ifstream       file_;
+    std::ifstream       *file_;
     int                 block_size_;
-    std::vector<char>   block_;
+    std::vector<char>   *block_;
 
     public:
+      ~LuaFileReader();
         LuaFileReader( const char* filename, int block_size = 4096 );
+
         const char* read( size_t* size );
         static const char* reader( lua_State* lua, void* context, size_t* size );
 };

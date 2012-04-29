@@ -6,7 +6,7 @@
 #ifndef SWEET_ERROR_ERRORTEMPLATE_HPP_INCLUDED
 #define SWEET_ERROR_ERRORTEMPLATE_HPP_INCLUDED
 
-#include <stdarg.h>
+#include <cstdarg>
 
 namespace sweet
 {

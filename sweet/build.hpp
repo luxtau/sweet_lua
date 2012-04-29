@@ -6,6 +6,20 @@
 #ifndef SWEET_BUILD_HPP_INCLUDED
 #define SWEET_BUILD_HPP_INCLUDED
 
+/************************************************************************/
+/* Configure lua binging                                                */
+/************************************************************************/
+//#define BUILD_PLATFORM_MSVC
+//#define BUILD_LIBRARY_TYPE_DYNAMIC
+
+#if defined(_DLL) || defined(_WINDLL) || defined(_USRDLL)
+#ifdef _DEBUG
+# define BUILD_VARIANT_DEBUG_DLL
+#else
+# define BUILD_VARIANT_RELEASE_DLL
+#endif
+#endif
+
 //
 // If the BUILD_LIBRARY_SUFFIX macro isn't defined assume that the Sweet Build
 // System is not being used to compile whatever is including this file and 

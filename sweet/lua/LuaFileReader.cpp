@@ -19,15 +19,21 @@ using namespace sweet::lua;
 //  The number of bytes in a block.
 */
 LuaFileReader::LuaFileReader( const char* filename, int block_size )
-: file_( filename, std::ios::binary ),
+: file_( new std::ifstream(filename, std::ios::binary) ),
   block_size_( block_size ),
-  block_( block_size, 0 )
+  block_( new std::vector<char>(block_size, 0) )
 {
-    if ( !file_.is_open() )
+    if ( !file_->is_open() )
     {
         SWEET_ASSERT( filename );
         SWEET_ERROR( OpeningFileFailedError("Opening '%s' failed", filename) );
     }
+}
+
+LuaFileReader::~LuaFileReader()
+{
+  delete file_;
+  delete block_;
 }
 
 /**
@@ -43,9 +49,9 @@ LuaFileReader::LuaFileReader( const char* filename, int block_size )
 const char* LuaFileReader::read( size_t* size )
 {
     SWEET_ASSERT( size );
-    file_.read( &block_[0], block_size_ );
-    *size = static_cast<size_t>( file_.gcount() );
-    return *size > 0 ? &block_[0] : NULL;
+    file_->read( block_->begin(), block_size_ );
+    *size = static_cast<size_t>( file_->gcount() );
+    return *size > 0 ? block_->begin() : NULL;
 }
 
 /**

@@ -10,8 +10,6 @@
 #include "macros.hpp"
 #include <exception>
 
-typedef char* va_list;
-
 namespace sweet
 {
 
@@ -21,7 +19,8 @@ namespace error
 /**
 // Base class for errors.
 */
-class SWEET_ERROR_DECLSPEC Error : virtual public std::exception
+class SWEET_ERROR_DECLSPEC Error // we can't use std::exception between modules now
+ // : virtual public std::exception
 {
     int error_;
     char text_ [1024];
@@ -29,9 +28,11 @@ class SWEET_ERROR_DECLSPEC Error : virtual public std::exception
     public:
         explicit Error( int error );
         Error( int error, const char* format, ... );
-        virtual ~Error() throw ();
-        int error() const;
-        const char* what() const throw ();
+        ~Error() throw ()
+        {}
+        int error() const { return error_; }
+        const char* what() const throw () { return text_; }
+
         static const char* format( int oserror, char* buffer, unsigned int length );
 
     protected:

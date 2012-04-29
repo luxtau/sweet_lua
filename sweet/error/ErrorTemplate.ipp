@@ -6,7 +6,7 @@
 #ifndef SWEET_ERROR_ERRORTEMPLATE_IPP_INCLUDED
 #define SWEET_ERROR_ERRORTEMPLATE_IPP_INCLUDED
 
-#include <stdarg.h>
+//#include <stdarg.h>
 #include "ErrorTemplate.hpp"
 
 namespace sweet

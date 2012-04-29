@@ -10,11 +10,11 @@
 #pragma warning( disable: 4351 4355 )
 
 #include <stdlib.h>
-#include <stdio.h>
+//#include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
 #include <math.h>
-#include <errno.h>
+//#include <errno.h>
 #include <time.h>
 
 #include <vector>
@@ -22,7 +22,7 @@
 #include <string>
 #include <fstream>
 
-#include <windows.h>
+//#include <windows.h>
 
 #include <sweet/lua/lua_/lua.h>
 #include <sweet/lua/lua_/lualib.h>
