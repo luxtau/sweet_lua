@@ -19,8 +19,8 @@ namespace error
 /**
 // Base class for errors.
 */
-class SWEET_ERROR_DECLSPEC Error // we can't use std::exception between modules now
- // : virtual public std::exception
+class SWEET_ERROR_DECLSPEC Error
+  : virtual public std::exception
 {
     int error_;
     char text_ [1024];

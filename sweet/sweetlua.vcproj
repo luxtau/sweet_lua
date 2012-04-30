@@ -24,7 +24,7 @@
 			OutputDirectory="$(SolutionDir)\bin\$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets="ontl\branches\devel\ntl\ntl-props.vsprops;ontl\branches\devel\ntl\ntl-x86.vsprops;ontl\branches\devel\ntl\ntl-stdc.vsprops"
+			InheritedPropertySheets="ntl\ntl-props.vsprops;ntl\ntl-x86.vsprops;ntl\ntl-stdc.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -70,7 +70,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="lua5.1.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="Lua\lib\"
+				AdditionalLibraryDirectories="d:\Perl\lua\lib\"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -102,7 +102,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
 			ConfigurationType="2"
-			InheritedPropertySheets="ontl\branches\devel\ntl\ntl-props.vsprops;ontl\branches\devel\ntl\ntl-x86.vsprops;ontl\branches\devel\ntl\ntl-stdc.vsprops"
+			InheritedPropertySheets="ntl\ntl-props.vsprops;ntl\ntl-x86.vsprops;ntl\ntl-stdc.vsprops"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -613,23 +613,23 @@
 			Name="RTL"
 			>
 			<File
-				RelativePath="ontl\branches\devel\ntl\rtl\crt.cpp"
+				RelativePath="ntl\rtl\crt.cpp"
 				>
 			</File>
 			<File
-				RelativePath="ontl\branches\devel\ntl\rtl\eh.cpp"
+				RelativePath="ntl\rtl\eh.cpp"
 				>
 			</File>
 			<File
-				RelativePath="ontl\branches\devel\ntl\rtl\ehsup.asm"
+				RelativePath="ntl\rtl\ehsup.asm"
 				>
 			</File>
 			<File
-				RelativePath="ontl\branches\devel\ntl\rtl\iostream.cpp"
+				RelativePath="ntl\rtl\iostream.cpp"
 				>
 			</File>
 			<File
-				RelativePath="ontl\branches\devel\ntl\rtl\rtti.cpp"
+				RelativePath="ntl\rtl\rtti.cpp"
 				>
 			</File>
 		</Filter>
